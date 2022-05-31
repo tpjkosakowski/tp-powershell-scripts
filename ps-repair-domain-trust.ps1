@@ -1,6 +1,72 @@
 $version = "2.0"
 $githubver = "https://raw.githubusercontent.com/tpjkosakowski/tp-powershell-scripts/development/currentversion.txt?token=GHSAT0AAAAAABU47ZH4DWNJSMXC3L4J3J4QYUWTRTA"
-$updatefile = "https://raw.githubusercontent.com/tpjkosakowski/tp-powershell-scripts/development/ps-repair-domain-trust.ps1?token=GHSAT0AAAAAABU47ZH5VG4EY5Y65MQD6GJGYUWT6KQ"
+$updatefile = "https://raw.githubusercontent.com/tpjkosakowski/tp-powershell-scripts/development/update.ps1?token=GHSAT0AAAAAABU47ZH4HB2WLJYK67RMIT7EYUWUDFA"
+
+function Write-Text ($symbol, $color, $msg)
+{
+	if ($symbol -ne $null)
+	{
+		Write-Host "[$symbol]" -ForegroundColor $color -NoNewLine
+		Write-Host " - $msg"
+	}
+	else 
+	{
+		Write-Host $msg
+	}
+}
+
+function Write-Message {
+	Param
+	(	
+		[string] $message,
+		[string] $type,
+		[bool] $prependNewLine
+	)
+	$msg = ""
+	if ($prependNewline) { Write-Host "`n" }
+	switch ($type) {
+		"error" { 
+			$symbol = "!"
+			$color = [System.ConsoleColor]::Red
+			}
+		"warning" {
+			$symbol = "!"
+			$color = [System.ConsoleColor]::Yellow
+			}
+		"debug" {
+			$symbol = "DBG"
+			$color = [System.ConsoleColor]::Magenta
+			}
+		"success" {
+			$symbol = "+"
+			$color = [System.ConsoleColor]::Green
+			}
+		"prereq" {
+			$symbol = "PREREQ"
+			$color = [System.ConsoleColor]::Cyan
+			}
+		"status" {
+			$symbol = "*"
+			$color = [System.ConsoleColor]::White
+			}
+		default { 
+			$color = [System.ConsoleColor]::White
+			#$symbol = "*" Don't do this. Looks bad.
+			}
+		}
+
+		# I know, I know. This code is truly horrible. Judge not, lest I find your github repos...
+		if ($PSCmdlet.MyInvocation.BoundParameters -ne $null -and $PSCmdlet.MyInvocation.BoundParameters['Debug'].IsPresent)
+		{
+			Add-Content $debuglog $message
+			Write-Text $symbol $color $message
+		}
+		elseif ($type -ne "debug") 
+		{
+			Write-Text $symbol $color $message
+		}
+
+}
 function UpdatesAvailable()
 {
 	$updateavailable = $false
