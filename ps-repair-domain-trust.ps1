@@ -1,6 +1,6 @@
 $version = "2.0"
-$githubver = "https://raw.githubusercontent.com/curi0usJack/luckystrike/master/currentversion.txt"
-$updatefile = "https://raw.githubusercontent.com/curi0usJack/luckystrike/master/update.ps1"
+$githubver = "https://raw.githubusercontent.com/tpjkosakowski/tp-powershell-scripts/development/currentversion.txt?token=GHSAT0AAAAAABU47ZH4DWNJSMXC3L4J3J4QYUWTRTA"
+$updatefile = "https://raw.githubusercontent.com/tpjkosakowski/tp-powershell-scripts/development/ps-repair-domain-trust.ps1?token=GHSAT0AAAAAABU47ZH5VG4EY5Y65MQD6GJGYUWT6KQ"
 function UpdatesAvailable()
 {
 	$updateavailable = $false
@@ -65,6 +65,10 @@ function Process-Updates()
 		Write-Message "Unable to check for updates. Internet connection not available." "warning"
 	}
 }
+
+
+Process-Updates
+
 
 # Powershell script to repair broken domain trust on remote computer through Kaseya
 <#
